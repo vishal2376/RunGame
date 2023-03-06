@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class SpawnPlayer : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject playerPrefab;
+
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Instantiate(playerPrefab, transform.position, Quaternion.identity);
+        Debug.Log(playerPrefab.name);
+        PhotonNetwork.Instantiate(playerPrefab.name, transform.position, Quaternion.identity);
     }
 }

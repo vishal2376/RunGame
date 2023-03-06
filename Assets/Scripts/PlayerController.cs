@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -13,46 +14,52 @@ public class PlayerController : MonoBehaviour
     public bool isPlayerAlive = true;
     private float _currentDashTime = 0f;
 
+    private PhotonView view;
+
     void Start()
     {
         logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+        view = GetComponent<PhotonView>();
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && isPlayerAlive)
+        if (view.IsMine)
         {
-            if (_isDashing == false)
+            if (Input.GetMouseButtonDown(0) && isPlayerAlive)
             {
-                var laneEdge = -edgePos;
-
-                if (_isLeftLane)
+                if (_isDashing == false)
                 {
-                    laneEdge = edgePos;
+                    var laneEdge = -edgePos;
+
+                    if (_isLeftLane)
+                    {
+                        laneEdge = edgePos;
+                    }
+
+                    _isDashing = true;
+                    _currentDashTime = 0f;
+                    playerStart = transform.position;
+                    playerEnd = new Vector3(laneEdge, playerStart.y, playerStart.z);
                 }
-
-                _isDashing = true;
-                _currentDashTime = 0f;
-                playerStart = transform.position;
-                playerEnd = new Vector3(laneEdge, playerStart.y, playerStart.z);
             }
-        }
 
-        if (_isDashing)
-        {
-            // incrementing time
-            _currentDashTime += Time.deltaTime;
-
-            var tValue = Mathf.Clamp01(_currentDashTime / dashTime);
-            transform.position = Vector3.Lerp(playerStart, playerEnd, tValue);
-
-
-            if (_currentDashTime >= dashTime)
+            if (_isDashing)
             {
-                // dash finished
-                _isDashing = false;
-                _isLeftLane = !_isLeftLane;
-                transform.position = playerEnd;
+                // incrementing time
+                _currentDashTime += Time.deltaTime;
+
+                var tValue = Mathf.Clamp01(_currentDashTime / dashTime);
+                transform.position = Vector3.Lerp(playerStart, playerEnd, tValue);
+
+
+                if (_currentDashTime >= dashTime)
+                {
+                    // dash finished
+                    _isDashing = false;
+                    _isLeftLane = !_isLeftLane;
+                    transform.position = playerEnd;
+                }
             }
         }
     }

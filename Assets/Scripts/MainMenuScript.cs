@@ -19,6 +19,11 @@ public class MainMenuScript : MonoBehaviour
         SceneManager.LoadScene("GameScreen");
     }
 
+    public void LoadLoadingScreen()
+    {
+        SceneManager.LoadScene("LoadingScreen");
+    }
+
     public void ExitGame()
     {
         Application.Quit();

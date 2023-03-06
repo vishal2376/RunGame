@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CreateAndJoin : MonoBehaviourPunCallbacks
 {
-    public InputField createInput;
-    public InputField joinInput;
-    
+    public TMP_InputField createInput;
+    public TMP_InputField joinInput;
+
     public void CreateRoom()
     {
         PhotonNetwork.CreateRoom(createInput.text);
